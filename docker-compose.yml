@@ -1,0 +1,32 @@
+version: "3"
+
+services:
+  node:
+    tty: true
+    image: node:14
+    container_name: ngm_back
+    depends_on:
+      - db
+    volumes:
+      - .:/root/
+    working_dir: /root/
+    environment:
+      - DB_URL=mongodb://ngm_db
+    command: bash -c "npm i && npm run start"
+    expose:
+      - "8080"
+    ports:
+      - "8080:3000"
+      
+  db:
+    image: mongo:latest
+    container_name: ngm_db
+    volumes:
+      - db-data:/data/db
+      - mongo-config:/data/configdb
+    ports:
+      - "27017:27017"
+
+volumes:
+  db-data:
+  mongo-config: 
